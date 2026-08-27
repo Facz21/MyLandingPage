@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-function Index() {
+export function Index() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground selection:bg-accent/30 selection:text-accent">
       {/* Dynamic Parallax Moving Background */}
