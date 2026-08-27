@@ -35,15 +35,18 @@ async function generateStaticHtml() {
   const indexPath = path.join(outputPublicDir, "index.html");
   const notFoundPath = path.join(outputPublicDir, "404.html");
   const noJekyllPath = path.join(outputPublicDir, ".nojekyll");
+  const cnamePath = path.join(outputPublicDir, "CNAME");
 
   await fs.writeFile(indexPath, html, "utf8");
   await fs.writeFile(notFoundPath, html, "utf8");
   await fs.writeFile(noJekyllPath, "", "utf8");
+  await fs.writeFile(cnamePath, "afcortesdev.com\n", "utf8");
 
   console.log(`✅ Static HTML successfully generated! (${html.length} bytes)`);
   console.log(`✅ Created: ${indexPath}`);
   console.log(`✅ Created: ${notFoundPath}`);
   console.log(`✅ Created: ${noJekyllPath}`);
+  console.log(`✅ Created: ${cnamePath}`);
 }
 
 generateStaticHtml().catch((err) => {
