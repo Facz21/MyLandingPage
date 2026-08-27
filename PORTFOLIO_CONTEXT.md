@@ -1,7 +1,10 @@
 # Contexto del Proyecto: Landing Page & Portafolio Personal
 
 ## Perfil & Datos del Desarrollador
-- **Nombre**: Andrés Cortés
+- **Nombre**: Andrés Felipe Cortés Zambrano
+- **Email**: afcortes.dev@gmail.com
+- **LinkedIn**: https://www.linkedin.com/in/andr%C3%A9s-felipe-cort%C3%A9s-zambrano-b01310283/
+- **GitHub**: https://github.com/Facz21
 - **Rol Principal**: Full-Stack Developer, AI Engineer & Data Analyst
 - **Experiencia**: 5+ años en desarrollo de software, arquitectura de APIs, sistemas de IA y análisis de datos.
 - **Idiomas**: Español (Nativo), Inglés (C2 Bilingüe fluido).
@@ -12,6 +15,7 @@
 ## Stack Tecnológico del Portafolio
 - **Framework Web**: TanStack Start / React 19 / TypeScript / Vite 8 / Nitro.
 - **Enrutamiento**: TanStack React Router (`file-based routing`).
+- **Internacionalización**: Contexto i18n nativo reactivo (Español / Inglés) con persistencia y selector dinámico.
 - **Estilos & UI**: Tailwind CSS v4, Radix UI primitives, Lucide Icons.
 - **Colores & Tema**: Sistema de diseño en OKLCH (`--accent` cian neón, `--accent-2` violeta/magenta, fondo oscuro deep space).
 
@@ -46,6 +50,22 @@
    - Animaciones de revelado suave (`useScrollReveal` con `IntersectionObserver`) en cada sección.
    - Espaciados verticales optimizados entre secciones (`py-14 sm:py-16`).
 
+5. **Sección de Contacto Directo (`Contact.tsx`)**:
+   - Enlaces directos y minimalistas con píldoras interactivas a:
+     - **Email** (`afcortes.dev@gmail.com`) con botón de copiado rápido al portapapeles y toast.
+     - **LinkedIn** (`in/andrés-felipe-cortés-zambrano-b01310283`).
+     - **GitHub** (`@Facz21`).
+
+6. **Botón Flotante "Volver Arriba" (`ScrollToTop.tsx`)**:
+   - Aparece suavemente al hacer scroll hacia abajo (> 350px).
+   - Animación de desvanecimiento, estilo neón y scroll suave al hacer clic.
+   - Botón de descarga de CV retirado del Hero para mantener un diseño conciso enfocado en proyectos.
+
+7. **Despliegue & CI/CD en GitHub Pages (`.github/workflows/deploy.yml`)**:
+   - Pipeline automatizado de GitHub Actions en cada `git push` a `main`.
+   - Script generador estático `scripts/build-gh-pages.js` que renderiza el HTML completo (`index.html`, `404.html`, `.nojekyll`) a partir de la compilación de Nitro.
+   - Compatible tanto con subrutas de GitHub Pages (`https://facz21.github.io/MyLandingPage/`) como con dominios personalizados.
+
 ---
 
 ## Proximo Paso: Los 3 Proyectos a Desarrollar y Desplegar
@@ -76,6 +96,9 @@ npm run dev
 
 # Compilar para producción (SSR + Cliente)
 npm run build
+
+# Compilar y exportar para GitHub Pages (estático con HTML pre-renderizado)
+npm run build:gh-pages
 
 # Previsualizar build de producción
 npm run preview

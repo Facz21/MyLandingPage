@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
-import { Menu, X, Terminal } from "lucide-react";
+import { Menu, X, Terminal, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/language-context";
 import { cn } from "@/lib/utils";
-
-const links = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Projects" },
-  { href: "#contact", label: "Contact" },
-];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const links = [
+    { href: "#about", label: t.nav.about },
+    { href: "#skills", label: t.nav.skills },
+    { href: "#projects", label: t.nav.projects },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -25,7 +26,9 @@ export function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled ? "border-b border-border bg-background/85 backdrop-blur-xl shadow-lg" : "bg-transparent",
+        scrolled
+          ? "border-b border-border bg-background/85 backdrop-blur-xl shadow-lg"
+          : "bg-transparent",
       )}
     >
       <nav className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-4">
@@ -48,19 +51,75 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
+
+          {/* Language Switcher */}
           <Button variant="neon" size="sm" className="ml-2" asChild>
-            <a href="#contact">Hire me</a>
+            <a href="#contact">{t.nav.contact}</a>
           </Button>
+          <div className="ml-2 flex items-center rounded-full border border-border/80 bg-surface/70 p-0.5 font-mono text-xs backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setLanguage("es")}
+              className={cn(
+                "rounded-full px-2.5 py-1 transition-all duration-200",
+                language === "es"
+                  ? "bg-accent text-background font-bold shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+              title="Cambiar a Español"
+            >
+              ES
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              className={cn(
+                "rounded-full px-2.5 py-1 transition-all duration-200",
+                language === "en"
+                  ? "bg-accent text-background font-bold shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+              title="Switch to English"
+            >
+              EN
+            </button>
+          </div>
         </div>
 
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-border text-foreground md:hidden"
-        >
-          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center rounded-full border border-border/80 bg-surface/70 p-0.5 font-mono text-xs">
+            <button
+              type="button"
+              onClick={() => setLanguage("es")}
+              className={cn(
+                "rounded-full px-2 py-0.5 transition-all",
+                language === "es" ? "bg-accent text-background font-bold" : "text-muted-foreground",
+              )}
+            >
+              ES
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              className={cn(
+                "rounded-full px-2 py-0.5 transition-all",
+                language === "en" ? "bg-accent text-background font-bold" : "text-muted-foreground",
+              )}
+            >
+              EN
+            </button>
+          </div>
+
+          <button
+            type="button"
+            aria-label={t.nav.toggleMenu}
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-md border border-border text-foreground"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </nav>
 
       {open && (
@@ -75,6 +134,13 @@ export function Navbar() {
               {l.label}
             </a>
           ))}
+          <div className="pt-2">
+            <Button variant="neon" size="sm" className="w-full" asChild>
+              <a href="#contact" onClick={() => setOpen(false)}>
+                {t.nav.contact}
+              </a>
+            </Button>
+          </div>
         </div>
       )}
     </header>

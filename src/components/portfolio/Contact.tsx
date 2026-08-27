@@ -1,75 +1,91 @@
-import { useState, type FormEvent } from "react";
-import { Github, Linkedin, Mail, Send } from "lucide-react";
+import { useState } from "react";
+import { Check, Copy, ExternalLink, Github, Linkedin, Mail } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Section } from "./Section";
+import { useLanguage } from "@/context/language-context";
 
-const socials = [
-  { icon: Github, label: "GitHub", href: "https://github.com" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
-  { icon: Mail, label: "Email", href: "mailto:hello@example.com" },
-];
+const EMAIL = "afcortes.dev@gmail.com";
+const GITHUB_URL = "https://github.com/Facz21";
+const LINKEDIN_URL =
+  "https://www.linkedin.com/in/andr%C3%A9s-felipe-cort%C3%A9s-zambrano-b01310283/";
 
 export function Contact() {
-  const [sending, setSending] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { t } = useLanguage();
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSending(true);
-    const form = e.currentTarget;
-    setTimeout(() => {
-      setSending(false);
-      form.reset();
-      toast.success("Message sent", { description: "Thanks — I'll get back to you shortly." });
-    }, 600);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      toast.success(t.contact.emailToastSuccess, {
+        description: EMAIL,
+      });
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      toast.error(t.contact.emailToastError, {
+        description: `${t.contact.emailDirectPrompt} ${EMAIL}`,
+      });
+    }
   };
 
   return (
-    <Section id="contact" eyebrow="Contact" title="Let's build something solid">
-      <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
-        <div>
-          <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-            Have an API to design, a legacy system to untangle, or infrastructure that needs a
-            steady hand? Send a message and let&apos;s talk.
-          </p>
-          <div className="mt-6 flex gap-3">
-            {socials.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={s.label}
-                className="grid h-11 w-11 place-items-center rounded-lg border border-border bg-surface text-muted-foreground transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent"
-              >
-                <s.icon className="h-5 w-5" />
-              </a>
-            ))}
-          </div>
+    <Section id="contact" eyebrow={t.contact.eyebrow} title={t.contact.title}>
+      <div className="max-w-2xl space-y-6">
+        <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {t.contact.description}
+        </p>
+
+        {/* Minimal Contact Channels */}
+        <div className="flex flex-wrap items-center gap-3 pt-2">
+          {/* Email Copy Button */}
+          <button
+            type="button"
+            onClick={handleCopyEmail}
+            className="group inline-flex items-center gap-2.5 rounded-full border border-border/80 bg-surface/70 px-4 py-2 font-mono text-xs font-medium text-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent sm:text-sm"
+            title={t.contact.emailCopy}
+          >
+            <Mail className="h-4 w-4 text-accent transition-transform group-hover:scale-110" />
+            <span>{EMAIL}</span>
+            {copied ? (
+              <span className="inline-flex items-center gap-1 text-xs text-accent">
+                <Check className="h-3.5 w-3.5" />
+                {t.contact.emailCopied}
+              </span>
+            ) : (
+              <Copy className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-accent" />
+            )}
+          </button>
+
+          {/* LinkedIn Link */}
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-surface/70 px-4 py-2 font-mono text-xs font-medium text-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent sm:text-sm"
+          >
+            <Linkedin className="h-4 w-4 text-accent transition-transform group-hover:scale-110" />
+            <span>LinkedIn</span>
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-accent" />
+          </a>
+
+          {/* GitHub Link */}
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-surface/70 px-4 py-2 font-mono text-xs font-medium text-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent sm:text-sm"
+          >
+            <Github className="h-4 w-4 text-accent transition-transform group-hover:scale-110" />
+            <span>GitHub</span>
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-accent" />
+          </a>
         </div>
 
-        <form onSubmit={onSubmit} className="surface-card space-y-4 p-6 hover:translate-y-0">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" required placeholder="Ada Lovelace" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required placeholder="you@company.com" />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea id="message" name="message" required rows={5} placeholder="Tell me about your project..." />
-          </div>
-          <Button type="submit" variant="hero" size="lg" disabled={sending} className="w-full">
-            {sending ? "Sending..." : "Send"} <Send className="h-4 w-4" />
-          </Button>
-        </form>
+        {/* Location & Remote Availability */}
+        <p className="flex items-center gap-2 pt-2 font-mono text-xs text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+          {t.contact.remoteStatus}
+        </p>
       </div>
     </Section>
   );

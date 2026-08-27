@@ -7,6 +7,7 @@ import { Projects } from "@/components/portfolio/Projects";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ParallaxBackground } from "@/components/portfolio/ParallaxBackground";
+import { ScrollToTop } from "@/components/portfolio/ScrollToTop";
 
 const title = "Andrés Cortés | Full-Stack Developer & AI Engineering";
 const description =
@@ -42,6 +43,7 @@ function Index() {
           <Contact />
         </main>
         <Footer />
+        <ScrollToTop />
       </div>
     </div>
   );
