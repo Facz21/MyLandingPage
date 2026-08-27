@@ -25,11 +25,16 @@ async function generateStaticHtml() {
 
   let html = await res.text();
 
-  // Make asset paths relative so it works on GitHub Pages subpaths (e.g. /MyLandingPage/)
-  // and custom domains alike
-  html = html.replace(/(href|src)=["']\/assets\//g, '$1="./assets/');
-  html = html.replace(/(href|src)=["']\/favicon\.ico["']/g, '$1="./favicon.ico"');
-  html = html.replace(/(href|src)=["']\/robots\.txt["']/g, '$1="./robots.txt"');
+  // Replace all absolute references to relative references everywhere in the HTML
+  // (attributes, script JSON manifests, modulepreloads, and style links)
+  html = html.replaceAll('"/assets/', '"./assets/');
+  html = html.replaceAll("'/assets/", "'./assets/");
+  html = html.replaceAll('href="/assets/', 'href="./assets/');
+  html = html.replaceAll('src="/assets/', 'src="./assets/');
+  html = html.replaceAll('"/favicon.ico"', '"./favicon.ico"');
+  html = html.replaceAll('"/robots.txt"', '"./robots.txt"');
+  html = html.replaceAll('href="/favicon.ico"', 'href="./favicon.ico"');
+  html = html.replaceAll('href="/robots.txt"', 'href="./robots.txt"');
 
   // Write index.html and 404.html for SPA fallback
   const indexPath = path.join(outputPublicDir, "index.html");
